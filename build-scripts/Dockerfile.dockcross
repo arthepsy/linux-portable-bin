@@ -1,0 +1,34 @@
+ARG BUILD_TYPE=dockcross
+ARG BUILD_ARCH
+ARG BUILD_PKGS=
+ARG BUILD_DIR=/root/work
+ARG BUILD_SCRIPT
+ARG BUILD_VERSION
+ARG BUILD_OPT=
+
+# hadolint ignore=DL3007
+FROM dockcross/${BUILD_ARCH}:latest AS builder
+ARG BUILD_TYPE
+ARG BUILD_ARCH
+ARG BUILD_PKGS
+ARG BUILD_DIR
+ARG BUILD_SCRIPT
+ARG BUILD_VERSION
+ARG BUILD_OPT
+
+# hadolint ignore=DL3000
+WORKDIR "${BUILD_DIR}"
+COPY "${BUILD_SCRIPT}" files/patch-* ./
+
+# hadolint ignore=DL3008
+RUN apt-get update \
+	&& apt-get -y --no-install-recommends install ${BUILD_PKGS} \
+\
+	&& chmod +x "${BUILD_SCRIPT}" \
+	&& "./${BUILD_SCRIPT}"
+
+# FROM scratch
+FROM busybox:1.31
+ARG BUILD_DIR
+COPY --from=builder "${BUILD_DIR}/out" "/cross"
+

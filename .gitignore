@@ -1,1 +1,6 @@
 *~
+out/
+Dockerfile.*
+!build-scripts/Dockerfile.*
+.dockerignore
+build-*.sh

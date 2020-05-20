@@ -1,0 +1,35 @@
+ARG BUILD_TYPE=musl
+ARG BUILD_ARCH
+ARG BUILD_PKGS=
+ARG BUILD_DIR=/build
+ARG BUILD_SCRIPT
+ARG BUILD_VERSION
+ARG BUILD_OPT=
+
+FROM muslcc/x86_64:${BUILD_ARCH} AS builder
+ARG BUILD_TYPE
+ARG BUILD_ARCH
+ARG BUILD_PKGS
+ARG BUILD_DIR
+ARG BUILD_SCRIPT
+ARG BUILD_VERSION
+ARG BUILD_OPT
+
+# hadolint ignore=DL3000
+WORKDIR "${BUILD_DIR}"
+COPY "${BUILD_SCRIPT}" files/patch-* ./
+
+# hadolint ignore=DL3018
+RUN apk update \
+	&& apk add --no-cache --virtual .deps ${BUILD_PKGS} \
+\
+	&& chmod +x "${BUILD_SCRIPT}" \
+	&& "./${BUILD_SCRIPT}" \
+\
+	&& apk del .deps
+
+# FROM scratch
+FROM busybox:1.31
+ARG BUILD_DIR
+COPY --from=builder "${BUILD_DIR}/out" "/cross"
+
