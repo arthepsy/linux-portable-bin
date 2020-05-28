@@ -9,13 +9,12 @@ XCI_VER=${XCI_VER:-}
 XCI_OPT=${XCI_OPT:-}
 
 _cd "${_cdir}/${XCI_DIR}"
-while read -r _arch; do
-	echo "- arch: ${_arch}"
-	set -- build "${_arch}" "${XCI_VER}" "${XCI_OPT}"
+while IFS= read -r _xarch <&3; do
+	set -- build "${_xarch}" "${XCI_VER}" "${XCI_OPT}"
 	if ! ./run.sh "$@"; then _err "fail"; fi
-	set -- pack "${_arch}" "${XCI_VER}" "${XCI_OPT}"
+	set -- pack "${_xarch}" "${XCI_VER}" "${XCI_OPT}"
 	if ! ./run.sh "$@"; then _err "fail"; fi
-done <<-EOF
+done 3<<-EOF
 	$(printf "%s\n" "${XCI_ARCH}" | tr ' ' '\n')
 EOF
 _cd "${_cdir}"
