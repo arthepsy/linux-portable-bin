@@ -10,6 +10,7 @@ XCI_OPT=${XCI_OPT:-}
 
 _cd "${_cdir}/${XCI_DIR}"
 while read -r _arch; do
+	echo "- arch: ${_arch}"
 	set -- build "${_arch}" "${XCI_VER}" "${XCI_OPT}"
 	if ! ./run.sh "$@"; then _err "fail"; fi
 	set -- pack "${_arch}" "${XCI_VER}" "${XCI_OPT}"
