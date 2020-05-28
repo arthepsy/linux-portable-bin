@@ -16,21 +16,43 @@ before_install:
 
 script:
   - cd "${TRAVIS_BUILD_DIR}/masscan"
+  - ./run.sh build x86 head && ./run.sh pack x86 head
+  - ./run.sh build x64 head && ./run.sh pack x64 head
   - ./run.sh build x86 && ./run.sh pack x86
-  #- ./run.sh build x64 && ./run.sh pack x64
-  #- ./run.sh build x86 head && ./run.sh pack x86 head
-  #- ./run.sh build x64 head && ./run.sh pack x64 head
+  - ./run.sh build x64 && ./run.sh pack x64
+  - cd "${TRAVIS_BUILD_DIR}/socat"
+  - ./run.sh build x86 && ./run.sh pack x86
+  - ./run.sh build x64 && ./run.sh pack x64
+  - ./run.sh build x86 "" weak-ssl && ./run.sh pack x86 "" weak-ssl
+  - ./run.sh build x64 "" weak-ssl && ./run.sh pack x64 "" weak-ssl
+  - cd "${TRAVIS_BUILD_DIR}/nmap"
+  - ./run.sh build x86 head bad-ssl && ./run.sh pack x86 head bad-ssl
+  - ./run.sh build x64 head bad-ssl && ./run.sh pack x64 head bad-ssl
+  - ./run.sh build x86 head weak-ssl && ./run.sh pack x86 head weak-ssl
+  - ./run.sh build x64 head weak-ssl && ./run.sh pack x64 head weak-ssl
+  - ./run.sh build x86 "" bad-ssl && ./run.sh pack x86 "" bad-ssl
+  - ./run.sh build x64 "" bad-ssl && ./run.sh pack x64 "" bad-ssl
+  - ./run.sh build x86 "" weak-ssl && ./run.sh pack x86 "" weak-ssl
+  - ./run.sh build x64 "" weak-ssl && ./run.sh pack x64 "" weak-ssl
+  - cd "${TRAVIS_BUILD_DIR}/openssl"
+  - ./run.sh build x86 "1.0.2-bad" zlib && ./run.sh pack x86 "1.0.2-bad"
+  - ./run.sh build x64 "1.0.2-bad" zlib && ./run.sh pack x64 "1.0.2-bad"
+  - ./run.sh build x86 "" zlib weak-ssl && ./run.sh pack x86 "" zlib weak-ssl
+  - ./run.sh build x64 "" zlib weak-ssl && ./run.sh pack x64 "" zlib weak-ssl
   - cd "${TRAVIS_BUILD_DIR}"
 
 deploy:
   provider: releases
   api_key:
     secure: w58jWhaiiclgxXcKAgTPPZAz1Qe3PjKp/tnEukzfVxLrSYt5MEpzId0clVR9QtD9RSdrOrBBr92Zj9IznfkdpX/j8pc8FbYTgnNmXiAv+piLEXeyFXmCDk/UQQNyL7Xmxmd7WMp3jxb/twtbfNzNUEyU5Ljaq4K85g7R7nYlr3azoJ8CQViRooN94DBPDRuO/CuXHWJELuaRnZh8+C0RQyGA0EK83cZj2DKauJyOLzz9QUQx3eNzgTZyKSyu0eTVvnGnz+8maQeAmXt2M1/IgiGtlldwvz6fDerEgeb2ew3/eiESA5mJaKI1ihhDZmBdK5pZLNFJQo6gPmqmF/NBOdwHejLK0PA0i4LoDOyVn+hatbLEd2cTp9jNU/lPn+GSPzr+ZcLiO4FLEPTNUlISqL/iHGKKRV2eNpLZc138cBp4CYfbUqYKi6f5WkioVfTgR7K4PPWYW3hakA/uXvQRSnMjl1rxYprXwLW/iGBSlnChFH5tsswPx55IGKlOQXz9cAPllsLCp68A2aTAmTvopxVg7IuUabV/1FMO60nSBspZLQfN+FgLMJJUSOdeL18nLjQ1vl3hhrf3f7zORqWOu3nVFlsIeecxMWEIdJoKj4+5VNMEAO7z5Ma/Nn+D9c0m7CC29m2FCrZNcG1xN/MBtxYQ43cR5M1O4C/26Jie0B4=
+  file_glob: true
   file:
-    - "masscan/out/masscan-1.0.5.x86.tar.gz"
-    #- "masscan/out/masscan-head.x86.tar.gz"
-    #- "masscan/out/masscan-1.0.5.x64.tar.gz"
-    #- "masscan/out/masscan-head.x64.tar.gz"
+    - "masscan/out/masscan-*.tar.gz"
+    - "socat/out/socat-*.tar.gz"
+    - "nmap/out/nmap-*.tar.gz"
+    - "nmap/out/ncat-*.tar.gz"
+    - "nmap/out/nping-*.tar.gz"
+    - "openssl/out/openssl-*.tar.gz"
   on:
     repo: arthepsy/linux-portable-bin
     all_branches: true
