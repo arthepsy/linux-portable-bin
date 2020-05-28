@@ -46,6 +46,7 @@ _get_opt() {  # 1 - valid options, #2+ - options
 	_vopts=$1
 	shift
 	for _opt in "$@"; do
+		[ -z "${_opt}" ] && continue
 		echo "${_vopts}" | tr '|' '\n' | grep -q "^${_opt}$"
 		if [ $? -eq 1 ]; then
 			echo "unknown option: $_opt" && return 1
