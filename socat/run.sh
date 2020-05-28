@@ -25,7 +25,7 @@ _action=$1; _target=$2
 _arch=$(_get_musl_arch "${_target}") || _err "unknown target: ${_target}"
 _ver=$3; [ -z "${_ver}" ] && _ver="${_latest}"
 
-shift 2; shift; _opt_req
+shift 2; [ "$#" -gt 0 ] && shift; _opt_req
 _opt=$(_get_opt "ssl|weak-ssl" "$@") || _err "${_opt}"
 _has_opt "${_opt}" "ssl" && _has_opt "${_opt}" "weak-ssl" && _usage
 _name=$(_get_name "${_ver}" "${_opt}")
