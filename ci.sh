@@ -8,13 +8,14 @@ _cd() { cd -- "$1" || _err "directory $1 does not exist"; }
 XCI_VER=${XCI_VER:-}
 XCI_OPT=${XCI_OPT:-}
 
-
 _cd "${_cdir}/${XCI_DIR}"
-printf "%s" "${XCI_ARCH}" | tr ' ' '\n' | while read -r _arch; do
+while read -r _arch; do
 	set -- build "${_arch}" "${XCI_VER}" "${XCI_OPT}"
 	if ! ./run.sh "$@"; then _err "fail"; fi
 	set -- pack "${_arch}" "${XCI_VER}" "${XCI_OPT}"
 	if ! ./run.sh "$@"; then _err "fail"; fi
-done
+done <<-EOF
+	$(printf "%s\n" "${XCI_ARCH}" | tr ' ' '\n')
+EOF
 _cd "${_cdir}"
 exit 0
