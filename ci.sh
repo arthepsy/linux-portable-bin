@@ -1,46 +1,19 @@
 #!/bin/sh
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
+_err() { echo "err: $1" >&2 && exit 1; }
+_cd() { cd -- "$1" || _err "directory $1 does not exist"; }
 
-_fail() {
-	if [ "$1" -ne 0 ]; then
-		echo "FAIL."
-		if [ -e "build.log" ]; then
-			cat "build.log"
-		fi
-		exit 1
-	fi
-}
+[ -z "${XCI_DIR}" ] && _err "XCI_DIR variable is empty."
+[ -z "${XCI_ARCH}" ] && _err "XCI_ARCH variable is empty."
+[ -z "${XCI_VER}" ] && _err "XCI_VER variable is empty."
+XCI_OPT=${XCI_OPT:-}
 
-
-cd "${_cdir}/masscan" || exit 1
-for _arch in x86 x64; do
-	./run.sh build "${_arch}" head > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" head; _fail $?
-	./run.sh build "${_arch}" > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}"; _fail $?
+_cd "${_cdir}/${XCI_DIR}"
+printf "%s" "${XCI_ARCH}" | tr ' ' '\n' | while read -r _arch; do
+	set -- build "${_arch}" "${XCI_VER}" "${XCI_OPT}"
+	if ! ./run.sh "$@"; then _err "fail"; fi
+	set -- pack "${_arch}" "${XCI_VER}" "${XCI_OPT}"
+	if ! ./run.sh "$@"; then _err "fail"; fi
 done
-cd "${_cdir}/socat" || exit 1
-for _arch in x86 x64; do
-	./run.sh build "${_arch}" > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}"; _fail $?
-	./run.sh build "${_arch}" "" weak-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" "" weak-ssl; _fail $?
-done
-cd "${_cdir}/nmap" || exit 1
-for _arch in x86 x64; do
-	./run.sh build "${_arch}" head bad-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" head bad-ssl; _fail $?
-	./run.sh build "${_arch}" head weak-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" head weak-ssl; _fail $?
-	./run.sh build "${_arch}" "" bad-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" "" bad-ssl; _fail $?
-	./run.sh build "${_arch}" "" weak-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" "" weak-ssl; _fail $?
-done
-cd "${_cdir}/openssl" || exit 1
-	./run.sh build "${_arch}" "1.0.2-bad" zlib > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" "1.0.2-bad" zlib; _fail $?
-	./run.sh build "${_arch}" "" zlib weak-ssl > build.log 2>&1; _fail $?
-	./run.sh pack  "${_arch}" "" zlib weak-ssl; _fail $?
-cd "${_cdir}" || exit 1
-
+_cd "${_cdir}"
+exit 0
