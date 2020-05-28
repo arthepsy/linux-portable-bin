@@ -5,8 +5,9 @@ _cd() { cd -- "$1" || _err "directory $1 does not exist"; }
 
 [ -z "${XCI_DIR}" ] && _err "XCI_DIR variable is empty."
 [ -z "${XCI_ARCH}" ] && _err "XCI_ARCH variable is empty."
-[ -z "${XCI_VER}" ] && _err "XCI_VER variable is empty."
+XCI_VER=${XCI_VER:-}
 XCI_OPT=${XCI_OPT:-}
+
 
 _cd "${_cdir}/${XCI_DIR}"
 printf "%s" "${XCI_ARCH}" | tr ' ' '\n' | while read -r _arch; do
