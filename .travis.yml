@@ -17,9 +17,9 @@ before_install:
 script:
   - cd "${TRAVIS_BUILD_DIR}/masscan"
   - ./run.sh build x86 && ./run.sh pack x86
-  - ./run.sh build x64 && ./run.sh pack x64
-  - ./run.sh build x86 head && ./run.sh pack x86 head
-  - ./run.sh build x64 head && ./run.sh pack x64 head
+  #- ./run.sh build x64 && ./run.sh pack x64
+  #- ./run.sh build x86 head && ./run.sh pack x86 head
+  #- ./run.sh build x64 head && ./run.sh pack x64 head
   - cd "${TRAVIS_BUILD_DIR}"
 
 deploy:
@@ -28,10 +28,12 @@ deploy:
     secure: w58jWhaiiclgxXcKAgTPPZAz1Qe3PjKp/tnEukzfVxLrSYt5MEpzId0clVR9QtD9RSdrOrBBr92Zj9IznfkdpX/j8pc8FbYTgnNmXiAv+piLEXeyFXmCDk/UQQNyL7Xmxmd7WMp3jxb/twtbfNzNUEyU5Ljaq4K85g7R7nYlr3azoJ8CQViRooN94DBPDRuO/CuXHWJELuaRnZh8+C0RQyGA0EK83cZj2DKauJyOLzz9QUQx3eNzgTZyKSyu0eTVvnGnz+8maQeAmXt2M1/IgiGtlldwvz6fDerEgeb2ew3/eiESA5mJaKI1ihhDZmBdK5pZLNFJQo6gPmqmF/NBOdwHejLK0PA0i4LoDOyVn+hatbLEd2cTp9jNU/lPn+GSPzr+ZcLiO4FLEPTNUlISqL/iHGKKRV2eNpLZc138cBp4CYfbUqYKi6f5WkioVfTgR7K4PPWYW3hakA/uXvQRSnMjl1rxYprXwLW/iGBSlnChFH5tsswPx55IGKlOQXz9cAPllsLCp68A2aTAmTvopxVg7IuUabV/1FMO60nSBspZLQfN+FgLMJJUSOdeL18nLjQ1vl3hhrf3f7zORqWOu3nVFlsIeecxMWEIdJoKj4+5VNMEAO7z5Ma/Nn+D9c0m7CC29m2FCrZNcG1xN/MBtxYQ43cR5M1O4C/26Jie0B4=
   file:
     - "masscan/out/masscan-1.0.5.x86.tar.gz"
-    - "masscan/out/masscan-head.x86.tar.gz"
-    - "masscan/out/masscan-1.0.5.x64.tar.gz"
-    - "masscan/out/masscan-head.x64.tar.gz"
+    #- "masscan/out/masscan-head.x86.tar.gz"
+    #- "masscan/out/masscan-1.0.5.x64.tar.gz"
+    #- "masscan/out/masscan-head.x64.tar.gz"
   on:
     repo: arthepsy/linux-portable-bin
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|2020-[0-9-]+|v[0-9\.]+.*?)$
   skip_cleanup: 'true'
   draft: true
