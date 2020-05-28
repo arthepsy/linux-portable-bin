@@ -15,31 +15,7 @@ before_install:
   - sudo systemctl restart docker
 
 script:
-  - cd "${TRAVIS_BUILD_DIR}/masscan"
-  - ./run.sh build x86 head && ./run.sh pack x86 head
-  - ./run.sh build x64 head && ./run.sh pack x64 head
-  - ./run.sh build x86 && ./run.sh pack x86
-  - ./run.sh build x64 && ./run.sh pack x64
-  - cd "${TRAVIS_BUILD_DIR}/socat"
-  - ./run.sh build x86 && ./run.sh pack x86
-  - ./run.sh build x64 && ./run.sh pack x64
-  - ./run.sh build x86 "" weak-ssl && ./run.sh pack x86 "" weak-ssl
-  - ./run.sh build x64 "" weak-ssl && ./run.sh pack x64 "" weak-ssl
-  - cd "${TRAVIS_BUILD_DIR}/nmap"
-  - ./run.sh build x86 head bad-ssl && ./run.sh pack x86 head bad-ssl
-  - ./run.sh build x64 head bad-ssl && ./run.sh pack x64 head bad-ssl
-  - ./run.sh build x86 head weak-ssl && ./run.sh pack x86 head weak-ssl
-  - ./run.sh build x64 head weak-ssl && ./run.sh pack x64 head weak-ssl
-  - ./run.sh build x86 "" bad-ssl && ./run.sh pack x86 "" bad-ssl
-  - ./run.sh build x64 "" bad-ssl && ./run.sh pack x64 "" bad-ssl
-  - ./run.sh build x86 "" weak-ssl && ./run.sh pack x86 "" weak-ssl
-  - ./run.sh build x64 "" weak-ssl && ./run.sh pack x64 "" weak-ssl
-  - cd "${TRAVIS_BUILD_DIR}/openssl"
-  - ./run.sh build x86 "1.0.2-bad" zlib && ./run.sh pack x86 "1.0.2-bad"
-  - ./run.sh build x64 "1.0.2-bad" zlib && ./run.sh pack x64 "1.0.2-bad"
-  - ./run.sh build x86 "" zlib weak-ssl && ./run.sh pack x86 "" zlib weak-ssl
-  - ./run.sh build x64 "" zlib weak-ssl && ./run.sh pack x64 "" zlib weak-ssl
-  - cd "${TRAVIS_BUILD_DIR}"
+  - cd "${TRAVIS_BUILD_DIR}" && bash "ci.sh"
 
 deploy:
   provider: releases
