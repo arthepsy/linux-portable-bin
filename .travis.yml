@@ -1,8 +1,17 @@
 language: generic
 
 env:
-  - XCI_DIR="masscan" XCI_ARCH="x86 x64" XCI_VER="head" XCI_OPT=""
-  - XCI_DIR="masscan" XCI_ARCH="x86 x64" XCI_VER=""     XCI_OPT=""
+  - XCI_DIR="masscan"  XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT=""
+  - XCI_DIR="masscan"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
+  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="bad-ssl"
+  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="weak-ssl"
+  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="bad-ssl"
+  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
+  - XCI_DIR="socat"    XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
+  - XCI_DIR="socat"    XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
+  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER="1.0.2-bad"  XCI_OPT="zlib"
+  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib"
+  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib weak-ssl"
 
 services:
   - docker
