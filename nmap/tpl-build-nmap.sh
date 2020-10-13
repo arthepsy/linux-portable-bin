@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export ZLIB_VERSION="1.2.11"     # 2017-01-15
-export OPENSSL_VERSION="1.1.1g"  # 2020-03-31
+export OPENSSL_VERSION="1.1.1h"  # 2020-09-22
 
 _requirements() {
 	NMAP_VERSION=${BUILD_VERSION:-}

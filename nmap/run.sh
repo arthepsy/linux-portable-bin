@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_latest="7.80"  # 2019-08-13
+_latest="7.91"  # 2020-10-09
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }
@@ -52,7 +52,7 @@ _name=$(_get_name "${_ver}" "${_opt}")
 _pkgs="make perl autoconf"
 case "${_ver}" in
 	7.70) ;;
-	7.80|7.90|8.00) _pkgs="${_pkgs} flex bison" ;;
+	7.80|7.90|7.91|8.00) _pkgs="${_pkgs} flex bison" ;;
 	head) _pkgs="${_pkgs} flex bison git" ;;
 	*) _err "invalid nmap version: ${_ver}" ;;
 esac

@@ -4,7 +4,7 @@
 export NCURSES_VERSION="6.2"     # 2020-02-12
 export READLINE_VERSION="8.0"    # 2019-01-07
 export ZLIB_VERSION="1.2.11"     # 2017-01-15
-export OPENSSL_VERSION="1.1.1g"  # 2020-03-31
+export OPENSSL_VERSION="1.1.1h"  # 2020-09-22
 
 _requirements() {
 	SOCAT_VERSION=${BUILD_VERSION:-}
