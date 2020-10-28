@@ -1,17 +1,19 @@
 language: generic
 
 env:
-  - XCI_DIR="masscan"  XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT=""
-  - XCI_DIR="masscan"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
-  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="bad-ssl"
-  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="weak-ssl"
-  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="bad-ssl"
-  - XCI_DIR="nmap"     XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
-  - XCI_DIR="socat"    XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
-  - XCI_DIR="socat"    XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
-  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER="1.0.2-bad"  XCI_OPT="zlib"
-  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib"
-  - XCI_DIR="openssl"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib weak-ssl"
+  - XCI_DIR="proxychains-ng"  XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT=""
+  - XCI_DIR="proxychains-ng"  XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
+  - XCI_DIR="masscan"         XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT=""
+  - XCI_DIR="masscan"         XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
+  - XCI_DIR="nmap"            XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="bad-ssl"
+  - XCI_DIR="nmap"            XCI_ARCH="x86 x64"  XCI_VER="head"       XCI_OPT="weak-ssl"
+  - XCI_DIR="nmap"            XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="bad-ssl"
+  - XCI_DIR="nmap"            XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
+  - XCI_DIR="socat"           XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT=""
+  - XCI_DIR="socat"           XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="weak-ssl"
+  - XCI_DIR="openssl"         XCI_ARCH="x86 x64"  XCI_VER="1.0.2-bad"  XCI_OPT="zlib"
+  - XCI_DIR="openssl"         XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib"
+  - XCI_DIR="openssl"         XCI_ARCH="x86 x64"  XCI_VER=""           XCI_OPT="zlib weak-ssl"
 
 services:
   - docker
@@ -36,6 +38,7 @@ deploy:
     secure: w58jWhaiiclgxXcKAgTPPZAz1Qe3PjKp/tnEukzfVxLrSYt5MEpzId0clVR9QtD9RSdrOrBBr92Zj9IznfkdpX/j8pc8FbYTgnNmXiAv+piLEXeyFXmCDk/UQQNyL7Xmxmd7WMp3jxb/twtbfNzNUEyU5Ljaq4K85g7R7nYlr3azoJ8CQViRooN94DBPDRuO/CuXHWJELuaRnZh8+C0RQyGA0EK83cZj2DKauJyOLzz9QUQx3eNzgTZyKSyu0eTVvnGnz+8maQeAmXt2M1/IgiGtlldwvz6fDerEgeb2ew3/eiESA5mJaKI1ihhDZmBdK5pZLNFJQo6gPmqmF/NBOdwHejLK0PA0i4LoDOyVn+hatbLEd2cTp9jNU/lPn+GSPzr+ZcLiO4FLEPTNUlISqL/iHGKKRV2eNpLZc138cBp4CYfbUqYKi6f5WkioVfTgR7K4PPWYW3hakA/uXvQRSnMjl1rxYprXwLW/iGBSlnChFH5tsswPx55IGKlOQXz9cAPllsLCp68A2aTAmTvopxVg7IuUabV/1FMO60nSBspZLQfN+FgLMJJUSOdeL18nLjQ1vl3hhrf3f7zORqWOu3nVFlsIeecxMWEIdJoKj4+5VNMEAO7z5Ma/Nn+D9c0m7CC29m2FCrZNcG1xN/MBtxYQ43cR5M1O4C/26Jie0B4=
   file_glob: true
   file:
+    - "proxychains-ng/out/proxychains-ng-*.tar.gz"
     - "masscan/out/masscan-*.tar.gz"
     - "socat/out/socat-*.tar.gz"
     - "nmap/out/nmap-*.tar.gz"

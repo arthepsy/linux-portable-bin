@@ -20,11 +20,12 @@ ncat-7.80.x86.tar.gz    nmap-7.80.x86.tar.gz    nping-7.80.x86.tar.gz
 ```
 
 ## supported
-|          | versions                                                               | features           | x86         | x64         |
-| ---------|------------------------------------------------------------------------|--------------------|-------------|-------------|
-| openssl  | [`1.0.2-bad`](https://github.com/drwetter/openssl-1.0.2.bad), `1.1.1h` | `zlib`, `weak-ssl` | static      | static      |
-| nmap     | `7.91`, `HEAD` | `bad-ssl`, `weak-ssl`, integrates [`nmap-vulners`](https://github.com/vulnersCom/nmap-vulners), run script  | static | static |
-| socat    | `1.7.3.4`                                                              | `ssl`, `weak-ssl`  | static      | static      |
-| masscan  | `1.0.5`, `HEAD`                                                        | includes `libpcap` | GLIBC_2.3.4 | GLIBC_2.3.4 |
-| oathtool | `2.6.2`                                                                |                    | static      | static      |
+|                | versions                                                               | features           | x86         | x64         |
+| ---------------|------------------------------------------------------------------------|--------------------|-------------|-------------|
+| openssl        | [`1.0.2-bad`](https://github.com/drwetter/openssl-1.0.2.bad), `1.1.1h` | `zlib`, `weak-ssl` | static      | static      |
+| nmap           | `7.91`, `HEAD` | `bad-ssl`, `weak-ssl`, integrates [`nmap-vulners`](https://github.com/vulnersCom/nmap-vulners), run script  | static | static |
+| socat          | `1.7.3.4`                                                              | `ssl`, `weak-ssl`  | static      | static      |
+| masscan        | `1.0.5`, `HEAD`                                                        | includes `libpcap` | GLIBC_2.3.4 | GLIBC_2.3.4 |
+| proxychains-ng | `4.14`, `HEAD`                                                         |                    | GLIBC_2.9   | GLIBC_2.9   |
+| oathtool       | `2.6.2`                                                                |                    | static      | static      |
 
