@@ -41,9 +41,12 @@ _build_musl_openssl102bad() {  # 1 - output, 2 - dependencies
 	_out="out"; [ -n "$1" ] && _out="$1"; _out="${BUILD_DIR}/${_out}"
 	_dep="dep"; [ -n "$2" ] && _dep="$2"; _dep="${BUILD_DIR}/${_dep}"
 	command -v git >/dev/null 2>&1 || _err "git not available."
+	_name="openssl-1.0.2.bad"
 	_cd "${BUILD_DIR}"
+	_msg "downloading ${_name}"
 	git clone --depth=1 "https://github.com/drwetter/openssl-1.0.2.bad" "openssl-1.0.2.bad" || _err "git clone"
 	_cd "openssl-1.0.2.bad"
+	_msg "patching ${_name}"
 	patch -p1 < fedora-dirk-ipv6.patch >/dev/null 2>&1
 	_openssl_arch=$(_get_openssl_arch) || _err "cannot determine openssl arch"
 	_openssl_options="no-shared -static enable-ssl-trace -DOPENSSL_USE_IPV6"
@@ -73,6 +76,7 @@ _build_musl_openssl102bad() {  # 1 - output, 2 - dependencies
 		*x86_64*|*amd64*) _openssl_options="${_openssl_options} enable-ec_nistp_64_gcc_128" ;;
 		*) _err "unknown architecture: ${MUSL_ARCH}" ;;
 	esac
+	_msg "configuring ${_name}"
         # shellcheck disable=SC2086
         ./Configure "${_openssl_arch}" \
                 --prefix="${_out}" \
@@ -80,8 +84,11 @@ _build_musl_openssl102bad() {  # 1 - output, 2 - dependencies
                 -L"${_dep}/lib" \
                 ${_openssl_options} || _err "Configure"
         perl configdata.pm --dump
+	_msg "depend ${_name}"
         make depend || _err "make depend"
+	_msg "building ${_name}"
         make || _err "make"
+	_msg "installing ${_name}"
         make install || _err "make install"
 	"${_out}/bin/openssl" ciphers -V 'ALL:COMPLEMENTOFALL'
 	"${_out}/bin/openssl" ciphers -V 'ALL:COMPLEMENTOFALL' | wc -l
@@ -90,10 +97,13 @@ _build_musl_openssl102bad() {  # 1 - output, 2 - dependencies
 _build_musl_openssl11xy() {  # 1 - output, 2 - dependencies
 	_out="out"; [ -n "$1" ] && _out="$1"; _out="${BUILD_DIR}/${_out}"
 	_dep="dep"; [ -n "$2" ] && _dep="$2"; _dep="${BUILD_DIR}/${_dep}"
+	_name="openssl-${OPENSSL_VERSION}"
 	command -v tar >/dev/null 2>&1 || _err "tar not available."
+	_msg "downloading ${_name}"
 	_fetch_and_extract "openssl" "${OPENSSL_VERSION}" "https://www.openssl.org/source/"
 	# fix Perl module (openssl-1.1.0 ... openssl-1.1.0?)
 	if grep -q "'File::Glob' => qw/glob/;" Configure; then
+		_msg "patching ${_name}"
 		find ./ -type f -exec sed -i'' "s#'File::Glob' => qw/glob/;#'File::Glob' => qw/bsd_glob/;#g" {} \;
 	fi
 	_openssl_arch=$(_get_openssl_arch) || _err "cannot determine openssl arch"
@@ -109,6 +119,7 @@ _build_musl_openssl11xy() {  # 1 - output, 2 - dependencies
 			enable-ssl3 enable-ssl3-method \
 			-DOPENSSL_TLS_SECURITY_LEVEL=0"
         fi
+	_msg "configuring ${_name}"
         # shellcheck disable=SC2086
         ./Configure "${_openssl_arch}" \
                 --prefix="${_out}" \
@@ -116,7 +127,9 @@ _build_musl_openssl11xy() {  # 1 - output, 2 - dependencies
                 -L"${_dep}/lib" \
                 ${_openssl_options} || _err "Configure"
         perl configdata.pm --dump
+	_msg "building ${_name}"
         make || _err "make"
+	_msg "installing ${_name}"
         make install || _err "make install"
 	"${_out}/bin/openssl" ciphers -V 'ALL:COMPLEMENTOFALL'
 	"${_out}/bin/openssl" ciphers -V 'ALL:COMPLEMENTOFALL' | wc -l

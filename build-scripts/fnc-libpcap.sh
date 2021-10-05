@@ -3,7 +3,10 @@
 # shellcheck disable=SC2120
 _build_glibc_libpcap() {  # 1 - output
 	_out="out"; [ -n "$1" ] && _out="$1"; _out="${BUILD_DIR}/${_out}"
+	_name="libpcap-${LIBPCAP_VERSION}"
+	_msg "downloading ${_name}"
 	_fetch_and_extract "libpcap" "${LIBPCAP_VERSION}" "https://www.tcpdump.org/release/"
+	_msg "patching ${_name}"
 	case "${LIBPCAP_VERSION}" in
 		1.9.*)
 			find ./ -type f -name '*.c' -exec sed -i'' 's#sscanf(#oldglibc_sscanf(#g' {} \;
@@ -26,8 +29,11 @@ _build_glibc_libpcap() {  # 1 - output
 			cat "../patch-link_glibc_2.7.${_arch}.h" >> "fix-glibc.h" || _err "missing link_glibc_2.7.h"
 			;;
 	esac
+	_msg "configuring ${_name}"
 	./configure --prefix="${_out}" || _err "configure"
+	_msg "buidling ${_name}"
 	make CFLAGS="-D_GNU_SOURCE --include fix-glibc.h" || _err "make"
+	_msg "installing ${_name}"
 	make install || _err "make install"
 	strip --strip-all "${_out}/lib/libpcap.so" 2>/dev/null >/dev/null
 	objdump -T "${_out}/lib/libpcap.so" | grep GLIBC

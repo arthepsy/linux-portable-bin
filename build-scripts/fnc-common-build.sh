@@ -6,6 +6,11 @@ _cd() { cd -- "$1" || _err "directory $1 does not exist"; }
 
 _has_opt() { echo "$1" | tr '|' '\n' | grep -q "^${2}$"; return $?; }
 
+_msg() {
+	printf '<%*s' 45 '' | sed 's/ /=/g'
+	echo " $1"
+}
+
 _get_fetch() {
 	_ua="Mozilla/5.0"
 	command -v fetch >/dev/null 2>&1 && echo "fetch -q --user-agent='${_ua}' -o " && return 0
