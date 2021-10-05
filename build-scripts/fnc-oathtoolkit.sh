@@ -6,9 +6,14 @@ _build_musl_oath_toolkit() {  # 1 - output
 	_name="oath-toolkit-${OATH_TOOLKIT_VERSION}"
 	_msg "downloading ${_name}"
 	_fetch_and_extract "oath-toolkit" "${OATH_TOOLKIT_VERSION}" "http://download.savannah.nongnu.org/releases/oath-toolkit/"
-	_msg "patching1 ${_name}"
-	# patch for more recent gcc
-	patch -p1 < "../patch-oath-toolkit-2.6.2-gcc7" || _err "failed to patch."
+	case "${OATH_TOOLKIT_VERSION}" in
+		2.6.2)
+			# patch for more recent gcc
+			_msg "patching1 ${_name}"
+			patch -p1 < "../patch-oath-toolkit-2.6.2-gcc7" || _err "failed to patch."
+			;;
+		*) ;;
+	esac
 	_msg "configuring ${_name}"
 	CC='gcc -static' CFLAGS='-fPIC' \
 	./configure --host "${MUSL_ARCH}" --prefix="${_out}" --disable-shared --enable-static || _err "configure"
