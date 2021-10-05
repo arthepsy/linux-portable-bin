@@ -2,9 +2,9 @@
 #set -o pipefail
 
 export NCURSES_VERSION="6.2"     # 2020-02-12
-export READLINE_VERSION="8.0"    # 2019-01-07
+export READLINE_VERSION="8.1"    # 2020-12-07
 export ZLIB_VERSION="1.2.11"     # 2017-01-15
-export OPENSSL_VERSION="1.1.1h"  # 2020-09-22
+export OPENSSL_VERSION="1.1.1l"  # 2021-08-23
 
 _requirements() {
 	SOCAT_VERSION=${BUILD_VERSION:-}
