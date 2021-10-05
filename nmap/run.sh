@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_latest="7.91"  # 2020-10-09
+_latest="7.92"  # 2021-08-07
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }
@@ -49,10 +49,10 @@ _opt=$(_get_opt "bad-ssl|weak-ssl" "$@") || _err "${_opt}"
 _has_opt "${_opt}" "bad-ssl" && _has_opt "${_opt}" "weak-ssl" && _usage
 _name=$(_get_name "${_ver}" "${_opt}")
 
-_pkgs="make perl autoconf"
+_pkgs="make perl autoconf file"
 case "${_ver}" in
-	7.70) ;;
-	7.80|7.90|7.91|8.00) _pkgs="${_pkgs} flex bison" ;;
+	7.7*) ;;
+	7.8*|7.9*|8.*) _pkgs="${_pkgs} flex bison" ;;
 	head) _pkgs="${_pkgs} flex bison git" ;;
 	*) _err "invalid nmap version: ${_ver}" ;;
 esac
