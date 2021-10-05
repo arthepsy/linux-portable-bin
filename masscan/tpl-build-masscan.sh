@@ -1,6 +1,8 @@
 #!/bin/sh
 
-export LIBPCAP_VERSION="1.9.1"  # 2019-09-30
+export LIBPCAP_VERSION="1.10.1"  # 20201-06-09
+#export LIBPCAP_VERSION="1.10.0"  # 2020-12-29
+#export LIBPCAP_VERSION="1.9.1"   # 2019-09-03
 
 _requirements() {
 	MASSCAN_VERSION=${BUILD_VERSION:-}
