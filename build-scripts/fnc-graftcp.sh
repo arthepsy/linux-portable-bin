@@ -12,13 +12,18 @@ _build_musl_graftcp() {  # 1 - output
 	git fetch --depth 1 origin "${GRAFTCP_VERSION}" || _err "git fetch failed"
 	git checkout FETCH_HEAD || _err "git checkout failed"
 	_msg "building ${_name}"
-	CC=/bin/cc make || _err "make"
+	CC=/bin/cc CROSS_COMPILE=/bin/ make || _err "make"
 	_msg "building static ${_name}"
 	/bin/cc -static -fPIC main.o graftcp.o util.o string-set.o conf.o -o graftcp || _err "cc -static failed"
 	strip -s graftcp
 	cd local
-	go build -ldflags "-s -w -extldflags=-static" -tags netgo ./cmd/graftcp-local || _err "go build graftcp-local failed"
-	go build -ldflags "-s -w -extldflags=-static" -tags netgo ./cmd/mgraftcp || _err "go build mgraftcp failed"
+	case "${BUILD_ARCH}" in
+		*x86|i486*|i586*|i686*) _goarch="386" ;;
+		*x64|x86_64*) _goarch="amd64" ;;
+		*) _err "unknown arch: ${BUILD_ARCH}" ;;
+	esac
+	CC=/bin/cc GOARCH="${_goarch}" CGO_ENABLED=1 go build -ldflags "-s -w -extldflags=-static" -tags netgo ./cmd/graftcp-local || _err "go build graftcp-local failed"
+	CC=/bin/cc GOARCH="${_goarch}" CGO_ENABLED=1 go build -ldflags "-s -w -extldflags=-static" -tags netgo ./cmd/mgraftcp || _err "go build mgraftcp failed"
 	cd ..
 	_msg "installing ${_name}"
 	mkdir -p "${_out}/bin"

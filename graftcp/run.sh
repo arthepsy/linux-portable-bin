@@ -1,6 +1,7 @@
 #!/bin/sh
 
 _latest="0bd869d043c5428a350985690e2fa0b7bd4e172f"  # 2021-09-13
+_latest="v0.5.0-beta.1"  # 2022-02-17
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }
@@ -28,7 +29,7 @@ shift 2; [ "$#" -gt 0 ] && shift; _opt_req
 _opt=""
 _name=$(_get_name "${_ver}" "${_opt}")
 
-_pkgs="git make linux-headers go"
+_pkgs="git make go"
 
 _check() {
 	docker inspect --type=image "moo/static-graftcp:${_name}.${_target}" > /dev/null 2>&1
