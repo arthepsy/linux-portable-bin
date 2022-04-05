@@ -1,6 +1,8 @@
 #!/bin/sh
 
 _latest="3.3.16"  # 2019-12-08
+#_latest="3.3.17"  # 2021-02-09
+_latest="4.0.0"   # 2022-03-22
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }
@@ -28,7 +30,7 @@ shift 2; [ "$#" -gt 0 ] && shift; _opt_req
 _opt=""
 _name=$(_get_name "${_ver}" "${_opt}")
 
-_pkgs="make git autoconf automake libtool gettext-dev pkgconf"
+_pkgs="make git autoconf automake libtool gettext-dev pkgconf patch file"
 
 _check() {
 	docker inspect --type=image "moo/static-procps-ng:${_name}.${_target}" > /dev/null 2>&1
