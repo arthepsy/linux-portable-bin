@@ -8,7 +8,12 @@ _build_musl_ncurses() {  # 1 - output
 	_msg "configuring ${_name}"
 	CC='gcc -static' CFLAGS='-fPIC' \
 	CXX='g++ -static' CXXFLAGS='-fPIC' \
-	./configure --prefix="${_out}" --disable-shared --enable-static || _err "configure"
+	./configure \
+		--prefix="${_out}" \
+		--with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo:/usr/lib/terminfo" \
+		--with-default-terminfo-dir="/usr/share/terminfo" \
+		--disable-shared \
+		--enable-static || _err "configure"
 	_msg "building ${_name}"
 	make || _err "make"
 	_msg "installing ${_name}"
