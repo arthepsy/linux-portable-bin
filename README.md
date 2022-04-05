@@ -28,6 +28,6 @@ ncat-7.80.x86.tar.gz    nmap-7.80.x86.tar.gz    nping-7.80.x86.tar.gz
 | masscan        | `1.3.2`, `HEAD`                                                        | includes `libpcap` | GLIBC_2.7   | GLIBC_2.7   |
 | proxychains-ng | `4.15`, `HEAD`                                                         |                    | GLIBC_2.9   | GLIBC_2.9   |
 | oathtool       | `2.6.7`                                                                |                    | static      | static      |
-| graftcp        | `v0.5.0-beta.1`, `0.4.0`, `HEAD`                                       |                    | N/A         | static      |
+| graftcp        | `0.5.0-beta.1`, `0.4.0`, `head`                                        |                    | static      | static      |
 | procps-ng      | `4.0.0`, `3.3.16`, `head`                                              |                    | static      | static      |
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-_latest="0bd869d043c5428a350985690e2fa0b7bd4e172f"  # 2021-09-13
-_latest="v0.5.0-beta.1"  # 2022-02-17
+_latest="0.4.0"         # 2021-07-25
+_latest="0.5.0-beta.1"  # 2022-02-17
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }
