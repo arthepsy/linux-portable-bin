@@ -6,7 +6,7 @@ _build_musl_zlib() {  # 1 - output
 	_msg "downloading ${_name}"
 	_fetch_and_extract "zlib" "${ZLIB_VERSION}" "https://www.zlib.net/"
 	_msg "configuring ${_name}"
-	CC='gcc -static' CFLAGS='-fPIC' \
+	CC='/bin/cc -static' CFLAGS='-fPIC' \
 	./configure --prefix="${_out}" --static || _err "configure"
 	_msg "building ${_name}"
 	make libz.a || _err "make"
