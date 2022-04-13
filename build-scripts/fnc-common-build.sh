@@ -12,7 +12,7 @@ _msg() {
 }
 
 _get_fetch() {
-	_ua="Mozilla/5.0"
+	_ua="wget"
 	command -v fetch >/dev/null 2>&1 && echo "fetch -q --user-agent='${_ua}' -o " && return 0
 	command -v wget  >/dev/null 2>&1 && echo "wget -q -U '${_ua}' -O " && return 0
 	command -v curl  >/dev/null 2>&1 && echo "curl -Ls -A '${_ua}' -o " && return 0
@@ -35,6 +35,14 @@ _fetch_and_extract() {  # 1 - name, 2 - version, 3 - url, 4 - ext
 		*) _err "unknown extension: ${_ext}" ;;
 	esac
 	_cd "${_fn}"
+}
+
+_get_configure_host() {
+        case "${BUILD_ARCH}" in
+                *x86|i486*|i586*|i686*) echo "i486-linux" ;;
+                *x64|x86_64*) echo "x86_64-linux" ;;
+                *) _err "unknown arch: ${BUILD_ARCH}" ;;
+        esac
 }
 
 _done() {
