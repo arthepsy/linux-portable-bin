@@ -39,7 +39,7 @@ _build_musl_procps_ng() {  # 1 - output, 2 - dependencies
 	_msg "autogen ${_name}"
 	./autogen.sh || _err "autogen"
 	_msg "configuring ${_name}"
-        CC='gcc -static' CFLAGS='-fPIC' \
+        CC='/bin/cc -static' CFLAGS='-fPIC' \
         CPPFLAGS="-I${_dep}/include -I${_dep}/include/ncurses" \
         LDFLAGS="--static -L${_dep}/lib" \
 	./configure --host "${MUSL_ARCH}" --prefix="${_out}" --disable-shared --enable-static || _err "configure"
@@ -47,5 +47,6 @@ _build_musl_procps_ng() {  # 1 - output, 2 - dependencies
 	make || _err "make"
 	_msg "installing ${_name}"
 	make install || _err "make install"
+	file "${_out}/bin/ps"
 	"${_out}/bin/ps" -V
 }
