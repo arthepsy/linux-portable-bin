@@ -5,8 +5,8 @@ export MHASH_VERSION="0.9.9.9"     # 2008-12-08
 export ACL_VERSION="2.3.1"         # 2021-03-16
 export ATTR_VERSION="2.5.1"        # 2021-03-16
 export E2FSPROGS_VERSION="1.46.5"  # 2021-12-30
-export LIBCAP_VERSION="2.64"       # 2022-04-10
-export ZLIB_VERSION="1.2.12"       # 2022-03-27
+export LIBCAP_VERSION="2.66"       # 2022-09-24
+export ZLIB_VERSION="1.2.13"       # 2022-10-14
 
 _requirements() {
 	AIDE_VERSION=${BUILD_VERSION:-}
