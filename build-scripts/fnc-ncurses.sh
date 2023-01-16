@@ -13,7 +13,8 @@ _build_musl_ncurses() {  # 1 - output
 		--with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo:/usr/lib/terminfo" \
 		--with-default-terminfo-dir="/usr/share/terminfo" \
 		--disable-shared \
-		--enable-static || _err "configure"
+		--enable-static \
+		--enable-pc-files || _err "configure"
 	_msg "building ${_name}"
 	make || _err "make"
 	_msg "installing ${_name}"
