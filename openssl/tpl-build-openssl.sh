@@ -1,7 +1,7 @@
 #!/bin/sh
 #set -o pipefail
 
-export ZLIB_VERSION="1.2.11"  # 2017-01-15
+export ZLIB_VERSION="1.2.13"  # 2022-10-14
 
 _requirements() {
 	OPENSSL_VERSION=${BUILD_VERSION:-}
