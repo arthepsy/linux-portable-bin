@@ -1,6 +1,7 @@
 #!/bin/sh
 
 _latest="1.35.0"   # 2021-12-30
+_latest="1.36.0"   # 2023-01-03
 
 _cdir=$(cd -- "$(dirname "$0")" && pwd)
 _err() { echo "err: $1" >&2 && exit 1; }

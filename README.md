@@ -23,7 +23,7 @@ ncat-7.80.x86.tar.gz    nmap-7.80.x86.tar.gz    nping-7.80.x86.tar.gz
 |                | versions                                                               | features           | x86         | x64         |
 | ---------------|------------------------------------------------------------------------|--------------------|-------------|-------------|
 | aide           | `0.17.4`                                                               |                    | static      | static      |
-| busybox        | `1.35.0`                                                               |                    | static      | static      |
+| busybox        | `1.36.0.`, `1.35.0`                                                    |                    | static      | static      |
 | openssl        | `1.1.1s`, [`1.0.2-bad`](https://github.com/drwetter/openssl-1.0.2.bad) | `zlib`, `weak-ssl` | static      | static      |
 | nmap           | `7.92`, `HEAD` | `bad-ssl`, `weak-ssl`, integrates [`nmap-vulners`](https://github.com/vulnersCom/nmap-vulners), run script  | static | static |
 | socat          | `1.7.4.4`                                                              | `ssl`, `weak-ssl`  | static      | static      |
