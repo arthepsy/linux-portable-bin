@@ -86,5 +86,8 @@ _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 
 		--build-arg BUILD_OPT="$7" \
 		-t "$2" \
 		-f "Dockerfile.$1" . || _err "docker"
+	_ec=$?
+	rm -f "${_cdir}/Dockerfile.$1" "${_cdir}/$5"
+	return "${_ec}"
 }
 
