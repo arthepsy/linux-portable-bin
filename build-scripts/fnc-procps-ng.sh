@@ -6,7 +6,7 @@ _build_musl_procps_ng() {  # 1 - output, 2 - dependencies
 	_dep="dep"; [ -n "$2" ] && _dep="$2"; _dep="${BUILD_DIR}/${_dep}"
 	_name="procps-ng-${PROCPS_NG_VERSION}"
 	case "${PROCPS_NG_VERSION}" in
-		4.0.0|head)
+		4.0.*|head)
 			_msg "upgrade musl (qsort_* since musl-1.2.2-r7)"
 			if grep -q '/v3.14/' /etc/apk/repositories; then
 				echo 'https://dl-cdn.alpinelinux.org/alpine/v3.15/main' > /etc/apk/repositories
@@ -30,9 +30,15 @@ _build_musl_procps_ng() {  # 1 - output, 2 - dependencies
 			_msg "patching ${_name}"
 			patch -p0 < "../patch-v3.3.17-w.c" || _err "failed to patch."
 			;;
-		4.0.0|head)
+		4.0.0)
 			_msg "patching ${_name}"
 			patch -p0 < "../patch-v4.0.0-w.c" || _err "failed to patch."
+			;;
+		4.0.1|4.0.2|head)
+			_msg "patching ${_name}"
+			_cd src
+			patch -p0 < "../../patch-v4.0.0-w.c" || _err "failed to patch."
+			_cd ..
 			;;
 		*) ;;
 	esac
@@ -42,6 +48,7 @@ _build_musl_procps_ng() {  # 1 - output, 2 - dependencies
         CC='/bin/cc -static' CFLAGS='-fPIC' \
         CPPFLAGS="-I${_dep}/include -I${_dep}/include/ncurses" \
         LDFLAGS="--static -L${_dep}/lib" \
+	PKG_CONFIG_PATH="${_dep}/lib/pkgconfig" \
 	./configure --host "${MUSL_ARCH}" --prefix="${_out}" --disable-shared --enable-static || _err "configure"
 	_msg "building ${_name}"
 	make || _err "make"

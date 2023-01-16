@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export NCURSES_VERSION="6.2"     # 2020-02-12
+export NCURSES_VERSION="6.4"     # 2022-12-31
 
 _requirements() {
 	PROCPS_NG_VERSION=${BUILD_VERSION:-}
