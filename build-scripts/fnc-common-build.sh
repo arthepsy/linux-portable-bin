@@ -30,6 +30,7 @@ _fetch_and_extract() {  # 1 - name, 2 - version, 3 - url, 4 - ext
 	_ext="tar.gz"; [ -n "$4" ] && _ext="$4"
 	${_fetch} "${_fn}.${_ext}" "${3}${_fn}.${_ext}" || _err "fetch failed"
 	case "${_ext}" in
+		tar.xz) tar -xf "${_fn}.${_ext}" || _err "tar" ;;
 		tar.gz) tar -xzf "${_fn}.${_ext}" || _err "tar" ;;
 		tar.bz2) tar -xjf "${_fn}.${_ext}" || _err "tar" ;;
 		*) _err "unknown extension: ${_ext}" ;;
