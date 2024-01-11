@@ -97,3 +97,21 @@ _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 
 	return "${_ec}"
 }
 
+_docker_strip() {  #1 - dir, 2+ - bin
+	_dir="$1"
+	cd -- "${_dir}" || _err "cannot cd to ${_dir}"
+	_h=$(pwd | md5sum)
+	_dname="moo_strip_${_h}"
+	docker run -d --rm -it --name "${_dname}" alpine:3 sh > /dev/null 2>&1 || _err "docker run"
+	docker exec "${_dname}" sh -c 'mkdir -p /work; cd /opt; wget https://github.com/upx/upx/releases/download/v4.2.2/upx-4.2.2-amd64_linux.tar.xz; tar xf upx-4.2.2-amd64_linux.tar.xz; mv upx-*/upx . ; rm -rf upx-*' > /dev/null 2>&1
+	docker exec "${_dname}" sh -c 'apk add binutils' > /dev/null 2>&1
+	shift;
+	while [ $# -ne 0 ]; do
+		_bin="$1"
+		docker cp "${_bin}" "${_dname}:/work/"
+		docker exec "${_dname}" sh -c "cd /work; ls -al "${_bin}"; strip -s "${_bin}"; /opt/upx --best --ultra-brute "${_bin}""
+		docker cp "${_dname}:/work/${_bin}" "${_bin}"
+		shift
+	done
+	docker kill "${_dname}" > /dev/null 2>&1
+}
