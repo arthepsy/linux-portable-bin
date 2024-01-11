@@ -1,0 +1,74 @@
+diff -ruN a/applets/applet_tables.c b/applets/applet_tables.c
+--- a/applets/applet_tables.c
++++ b/applets/applet_tables.c
+@@ -53,20 +53,32 @@
+ 	return strcmp(aa->name, bb->name);
+ }
+ 
+-static int str_isalnum_(const char *s)
++char* fix_name(const char *s)
+ {
+-	while (*s) {
+-		if (!isalnum((unsigned char)*s) && *s != '_')
+-			return 0;
+-		s++;
++	int sz = strlen(s);
++	char *ns = malloc(sz*4 + 1);
++	if (ns == NULL) {
++		fprintf(stderr, "malloc() failed!\n");
++		exit(1);
+ 	}
+-	return 1;
++	int j = 0;
++	for (int i = 0; i < sz; i++) {
++		if (!isalnum((unsigned char)s[i]) && s[i] != '_') {
++			sprintf(&ns[j], "0x%02x", (unsigned char)s[i]);
++			j += 4;
++		} else {
++			ns[j++] = s[i];
++		}
++	}
++	ns[j] = '\0';
++	return ns;
+ }
+ 
+ int main(int argc, char **argv)
+ {
+ 	int i, j;
+ 	char tmp1[PATH_MAX], tmp2[PATH_MAX];
++	char *name;
+ 
+ 	// In find_applet_by_name(), before linear search, narrow it down
+ 	// by looking at N "equidistant" names. With ~350 applets:
+@@ -145,8 +157,9 @@
+ 	printf(";\n\n");
+ 
+ 	for (i = 0; i < NUM_APPLETS; i++) {
+-		if (str_isalnum_(applets[i].name))
+-			printf("#define APPLET_NO_%s %d\n", applets[i].name, i);
++		name = fix_name(applets[i].name);
++		printf("#define APPLET_NO_%s %d\n", name, i);
++		free(name);
+ 	}
+ 	printf("\n");
+ 
+diff -ruN a/scripts/embedded_scripts b/scripts/embedded_scripts
+--- a/scripts/embedded_scripts
++++ b/scripts/embedded_scripts
+@@ -98,8 +98,14 @@
+ 	printf 'const uint16_t applet_numbers[] = {\n'
+ 	for i in $custom_scripts $applet_scripts
+ 	do
+-		# TODO support applets with names including invalid characters
+-		printf '\tAPPLET_NO_%s,\n' $i
++		printf '\tAPPLET_NO_'
++		printf '%s' "$i" | while IFS='' read -r -n 1 c; do
++			case "$c" in
++				[A-Za-z0-9_]) printf '%s' "$c" ;;
++				*) printf '0x%02x' "'$c" ;;
++			esac
++		done | tr -d '\n'
++		printf ',\n'
+ 	done
+ 	printf '};\n'
+ 	printf '#else\n'
