@@ -65,13 +65,18 @@ _get_name() {  #1 - version, #2 - options
 	echo "${_name}"
 }
 
-_build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 - script, #6 - version, #7 - options
-	[ $# -lt 7 ] && _err "usage: <docker_type> <docker_name> <build_arch> <build_pkgs> <build_script> <build_ver> <build_opt>"
+_build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 - script, #6 - version, #7 - options, #8 - debug
+	[ $# -lt 7 ] && _err "usage: <docker_type> <docker_name> <build_arch> <build_pkgs> <build_script> <build_ver> <build_opt> [<debug>]"
 	cd -- "${_cdir}" || _err "cannot cd to ${_cdir}"
 	_bs="${_cdir}/../build-scripts"
 	for _fn in "Dockerfile.$1" "dot.dockerignore"; do
 		[ ! -f "${_bs}/${_fn}" ] && _err "does not exist: ${_fn}"
 	done
+	_docker_args=""
+	case "$8" in
+		[dD][eE][bB][uU][gG]) _docker_args="${_docker_args} --target builder" ;;
+		*) ;;
+	esac
 	cp "${_bs}/Dockerfile.$1" "${_cdir}/Dockerfile.$1" || _err "cp Dockerfile.$1"
 	cp "${_bs}/dot.dockerignore" "${_cdir}/.dockerignore" || _err "cp .dockerignore"
 	env DOCKER_BUILDKIT=1 \
@@ -84,10 +89,11 @@ _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 
 		--build-arg BUILD_SCRIPT="$5" \
 		--build-arg BUILD_VERSION="$6" \
 		--build-arg BUILD_OPT="$7" \
+		${_docker_args} \
 		-t "$2" \
 		-f "Dockerfile.$1" . || _err "docker"
 	_ec=$?
-	rm -f "${_cdir}/Dockerfile.$1" "${_cdir}/$5"
+	rm -f "${_cdir}/.dockerignore" "${_cdir}/Dockerfile.$1" "${_cdir}/$5"
 	return "${_ec}"
 }
 
