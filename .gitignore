@@ -1,6 +1,6 @@
 *~
 out/
 Dockerfile.*
-!build-scripts/Dockerfile.*
+!core/Dockerfile.*
 .dockerignore
 build-*.sh
