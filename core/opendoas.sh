@@ -16,7 +16,7 @@ _build_musl_opendoas() {  # 1 - output
 	cp ../sudo "${_out}/sudo"
 	chmod a+x "${_out}/sudo"
 	cp doas "${_out}/doas"
-        file "${_out}/doas"
-        ls -al "${_out}/doas"
+	file "${_out}/doas"
+	ls -al "${_out}/doas"
 	exit 0
 }
