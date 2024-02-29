@@ -7,7 +7,7 @@ ARG BUILD_VERSION
 ARG BUILD_OPT=
 
 # hadolint ignore=DL3007
-FROM dockcross/linux-${BUILD_ARCH}:latest AS builder
+FROM dockcross/manylinux2014-${BUILD_ARCH}:latest AS builder
 ARG BUILD_TYPE
 ARG BUILD_ARCH
 ARG BUILD_PKGS
@@ -21,8 +21,8 @@ WORKDIR "${BUILD_DIR}"
 COPY "${BUILD_SCRIPT}" files/* ./
 
 # hadolint ignore=DL3008
-RUN apt-get update \
-	&& apt-get -y --no-install-recommends install ${BUILD_PKGS} \
+RUN yum clean expire-cache \
+	&& yum -y install ${BUILD_PKGS} \
 	&& chmod +x "${BUILD_SCRIPT}" \
 	&& "./${BUILD_SCRIPT}"
 

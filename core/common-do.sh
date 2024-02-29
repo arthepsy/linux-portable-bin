@@ -9,8 +9,8 @@ _usage() {
 	_is_func '_pkg_usage' && _pkg_usage
 	printf "usage: %s check|build|pack <target> <version> [<options>]\n" "$0"
 	printf "\ntarget:\n"
-	printf "\tx86\tx86 32-bit (musl)\n"
-	printf "\tx64\tx86 64-bit (musl)\n"
+	printf "\tx86\tx86 32-bit\n"
+	printf "\tx64\tx86 64-bit\n"
 	printf "\nversion:\n"
 	_dots=$(printf '%s' "${_VERSION}" | tr -dc '.')
 	if [ "${_dots}" = ".." ]; then
@@ -21,6 +21,10 @@ _usage() {
 		printf '\tXXX\t'
 	fi
 	printf 'use specific version, e.g., %s\n' "${_VERSION}"
+	if [ -n "${_OPTS:-}" ]; then
+		printf '\noptions:\n'
+		printf '%s' "${_OPTS}" | tr '|' '\n' | sed -e 's#^#\t#'
+	fi
 	printf "\nexample:\n      %s build x64 %s\n\n" "$0" "${_VERSION}"
         exit 1
 }
@@ -35,8 +39,8 @@ _get_musl_arch() {
 
 _get_dockcross_arch() {
 	case "$1" in
-		x86) printf "linux-x86" && return 0 ;;
-		x64) printf "linux-x64" && return 0 ;;
+		x86) printf "x86" && return 0 ;;
+		x64) printf "x64" && return 0 ;;
 	        *) return 1 ;;
 	esac
 }
@@ -86,7 +90,6 @@ _get_opt() {  # 1 - valid options, #2+ - options
 	printf '%s' "${_opts}" | cut -c2-
 	return 0
 }
-
 
 _parse_opts() {
 	shift 2; [ "$#" -gt 0 ] && shift
@@ -239,9 +242,9 @@ _do_pack() {
 _pkg_main() {
 	[ -z "${_NAME}" ] && _err: "_NAME must be defined."
 	_SDIR=$(cd -- "$(dirname "$0")" && pwd)
-	_parse_args "$@"
 	_parse_opts "$@"
-	_is_func '_pkg_parse' && _pkg_parse
+	_is_func '_pkg_post_opts' && _pkg_post_opts
+	_parse_args "$@"
 	_PKGS="${_PKGS:-}"
 	_VERSION_FULL="$(_get_ver_full "${_VERSION}" "${_OPT}")"
 	_NAME_FULL="${_NAME}-${_VERSION_FULL}.${_TARGET}"
