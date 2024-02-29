@@ -41,6 +41,14 @@ _get_dockcross_arch() {
 	esac
 }
 
+_get_arch() {  # 1 - backend, 2 - target
+	case "$1" in
+		musl) _get_musl_arch "$2" ;;
+		dockcross*) _get_dockcross_arch "$2" ;;
+		*) _err "unknown backend: $1" ;;
+	esac
+}
+
 _parse_args() {
 	[ $# -lt 2 ] && _usage
 	_ACTION="$1"
@@ -50,7 +58,8 @@ _parse_args() {
 		_DEBUG="debug"
 	fi
 	_TARGET="$2"
-	_ARCH=$(_get_musl_arch "${_TARGET}") || _err "unknown target: ${_TARGET}"
+	_BACKEND="${_BACKEND:-musl}"
+	_ARCH=$(_get_arch "${_BACKEND}" "${_TARGET}") || _err "unknown target: ${_TARGET}"
 	_VERSION="${3:-$_VERSION}"
 }
 
@@ -116,7 +125,11 @@ _prepare() {  # 1 - name, #2+ - includes
 _do_build() {
 	_docker_script="build-${_NAME}.sh"
 	_prepare "${_docker_script}" "${_NAME}"
-	_build_docker "musl" "${_DOCKER_IMAGE_NAME}" "${_ARCH}" "${_PKGS}" "${_docker_script}" "${_VERSION}" "${_OPT}" "${_DEBUG}"
+	case "${_BACKEND}" in
+		musl|dockcross|dockcross-*) _docker_type="${_BACKEND}" ;;
+		*) _err "unknown backend: ${_BACKEND}" ;;
+	esac
+	_build_docker "${_docker_type}" "${_DOCKER_IMAGE_NAME}" "${_ARCH}" "${_PKGS}" "${_docker_script}" "${_VERSION}" "${_OPT}" "${_DEBUG}"
 }
 
 _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 - script, #6 - version, #7 - options, #8 - debug
