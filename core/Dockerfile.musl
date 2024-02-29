@@ -15,16 +15,15 @@ ARG BUILD_SCRIPT
 ARG BUILD_VERSION
 ARG BUILD_OPT
 
+# hadolint ignore=DL3018
+RUN apk update && apk add --no-cache --virtual .deps ${BUILD_PKGS}
+
 # hadolint ignore=DL3000
 WORKDIR "${BUILD_DIR}"
 COPY "${BUILD_SCRIPT}" files/* ./
 
-# hadolint ignore=DL3018
-RUN apk update \
-	&& apk add --no-cache --virtual .deps ${BUILD_PKGS} \
-	&& chmod +x "${BUILD_SCRIPT}" \
-	&& "./${BUILD_SCRIPT}"
-#	&& apk del .deps
+RUN chmod +x "${BUILD_SCRIPT}" && "./${BUILD_SCRIPT}"
+# RUN apk del .deps
 
 # FROM scratch
 FROM busybox:1.31

@@ -147,6 +147,9 @@ _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 
 		[dD][eE][bB][uU][gG]) _docker_args="${_docker_args} --target builder" ;;
 		*) ;;
 	esac
+	if [ -n "${NOCACHE:-}" ]; then
+		_docker_args="${_docker_args} --no-cache"
+	fi
 	cp "${_bs}/Dockerfile.$1" "${_SDIR}/Dockerfile.$1" || _err "cp Dockerfile.$1"
 	cp "${_bs}/dot.dockerignore" "${_SDIR}/.dockerignore" || _err "cp .dockerignore"
 	if [ ! -d "${_SDIR}/files" ]; then
@@ -155,7 +158,6 @@ _build_docker() {  #1 - docker type, #2 - docker name, #3 - arch, #4 - pkgs, #5 
 	# shellcheck disable=SC2086
 	env DOCKER_BUILDKIT=1 \
 	docker build \
-		--no-cache \
 		--progress=plain \
 		--build-arg BUILD_TYPE="$1" \
 		--build-arg BUILD_ARCH="$3" \
