@@ -250,7 +250,7 @@ _pkg_main() {
 	_PKGS="${_PKGS:-}"
 	_VERSION_FULL="$(_get_ver_full "${_VERSION}" "${_OPT}")"
 	_NAME_FULL="${_NAME}-${_VERSION_FULL}.${_TARGET}"
-	_DOCKER_IMAGE_NAME="moo/static-${_NAME}:${_VERSION_FULL}.${_TARGET}"
+	_DOCKER_IMAGE_NAME="moo/portable-${_NAME}:${_VERSION_FULL}.${_TARGET}"
 	_fn_pkg="_pkg_${_ACTION}"
 	if _is_func "${_fn_pkg}"; then
 			${_fn_pkg}
